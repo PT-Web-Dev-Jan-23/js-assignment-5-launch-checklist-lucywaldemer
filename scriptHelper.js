@@ -80,13 +80,19 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
 // getting the JSON planet data
 async function myFetch() {
     let planetsReturned;
-
-    planetsReturned = await fetch("https://handlers.education.launchcode.org/static/planets.json").then( function(response) {
- return response.json()
+// if (needs to respond to status = 400)>> throwing a new error /else statement needed here LINE 85
+planetsReturned = await fetch("https://handlers.education.launchcode.org/static/planets.json").then( function(response) {
+    if (response.status >= 400) {
+        throw new Error ("Bad response");
+    }
+    else {
+        return response.json();
+    }
 });
-
-    return planetsReturned;
+return planetsReturned;
 }
+
+
 // selecting a random planet 
 function pickPlanet(planets) {
    const index =  Math.floor(Math.random() * planets.length);
